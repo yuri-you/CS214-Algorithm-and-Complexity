@@ -1,0 +1,38 @@
+Introduction to Algorithms(3rd Edition).pdf
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.py
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.lb
+*.rar
+*.sln
+*.pyproj
+*.suo
+*.ilk
+*.pdb
+*.vcxproj
+*.filters
+*.user
+
+## Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+## ignore binary file and zip file
+*.exe
+*.zip
+*.7z
+*.rarv

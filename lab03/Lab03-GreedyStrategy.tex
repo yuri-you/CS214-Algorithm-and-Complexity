@@ -1,0 +1,217 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage{appendix}
+\usepackage{soul}
+\usepackage{listings}
+\usepackage[usenames]{xcolor}
+\usepackage{amsthm,amsmath,amssymb}
+\usepackage{mathrsfs}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab03-Greedy Strategy}}\vspace{1mm}\\
+CS214-Algorithm and Complexity, Xiaofeng Gao, Spring 2021.}}
+
+
+\begin{center}
+\footnotesize{\color{blue}$*$ Name:\underline{\quad   Haoyi You  \quad  }\quad Student ID:\underline{\quad 519030910193 \quad} \quad Email: \underline{\quad yuri-you@sjtu.edu.cn \quad}}
+\end{center}
+
+\begin{enumerate}
+	\item \textit{Interval Scheduling.} Interval Scheduling is a classic problem solved by \textbf{greedy algorithm}: given $n$ jobs and the $j$-th job starts at $s_j$ and finishes at $f_j$. Two jobs are compatible if they do not overlap. The goal is to find maximum subset of mutually compatible jobs. Tim wants to solve it by sort the jobs in descending order of $s_j$. Is this attempt correct? Prove the correctness of such idea, or else provide a counter-example.
+	   \begin{solution}
+	        Such idea is correct.Every time he only need to choose the  $max~f_j$ in the jobs that are compatible with the jobs chosen.\\
+	        Proof:
+	        Assume $\mathbb{A}$ is a random given job set. $\mathbb{B}$ is the chosen job set using the algorithm above and $\mathbb{C}$ is one of the best solution job set with maximum $|\mathbb{B\cap C}|$.\\
+	        Let $b$ be the element that has minimum $s_b$  in $\mathbb{B-C}$ and $c$ be the element that has minimum $s_j$  in $\mathbb{C-B}$.\\
+	        Let $\mathbb{D}$ be subset of $\mathbb{B\cap C}$ and every element in $\mathbb{D}$ has larger $s_j$ than $s_b$. And $\mathbb{E}= \mathbb{C-D}-\{ b\}$. It is obvious that $b$ or $c$ is compatible with, and $c$ is also compatible with $\mathbb{E}$, which means $\forall e\in \mathbb{E}$,$f_e\le s_c$. Since $s_b\ge s_c$, $b$ is also compatible with $\mathbb{C}$, such that we change $c$ to $b$ in $\mathbb{C}$ getting $\mathbb{C'}$. $\mathbb{C'}$ is also a best solution, which is against the assume.
+	        
+	        
+	   \end{solution}
+	
+	\item \textit{Done deal.} In a basketball league, teams need to complete player trades through matching contracts. Every player is offered a contract. For the sake of simplicity, we assume that the unit is $ M $, and the size of all contracts are integers. The process of contract matching refers to the equation: $ \sum_{i\in A} a_{i}=\sum_{j\in B} b_{j} $, where $ a_{i} $ refers to the contract value of player $ i $ in team $A$ involved in the trade and $ b_{j} $ refers to the value of player $ j $ in team $B$. 
+	
+	Assume that you are a manager of a basketball team and you want to get \textbf{one} star player from another team through trade. The contract of the star player is $ n (n\in \mathbb{N}^+) $. The goal is to complete the trade with as few players as possible. 
+	
+	\begin{enumerate}
+		\item Describe a \textbf{greedy} algorithm to get the deal done with the least players in your team. Assume that there are only 4 types of contracts in your team: $25M$, $ 10M $, $ 5M $, $ 1M $, and there is no limit to the number of players. Prove that your algorithm yields an optimal solution.
+		\item Suppose that the available contract sizes are powers of $c$,
+		i.e., the values are $c^{0}, c^{1}, \ldots, c^{k}$ for some integers $c>1$ and $k \geq 1$. Show that the greedy algorithm always yields an optimal solution.
+		\item Give a set of contract sizes for which the greedy algorithm does not yield an optimal solution. Your set should include a $ 1M $ so that there is a solution for every value of $ n $.
+	\end{enumerate}
+    \begin{solution}
+       \begin{enumerate}
+           \item~\par Algorithm:\\
+           Choose the max number of $25M$ contracts and for the remain number, choose the max number of $10M$ contracts and so on.\\
+           Proof:\\Assume my algorithm get the number of each contracts are $x_1,x_2,x_3,x_4$ (from $25M$ to $1M$). And there is a more optimal solution with $y_1,y_2,y_3,y_4$. Mark result $Y=y_1+y_2+y_3+y_4$. If $y_2\ge3$,let $y_2-3,y_1+1,y_3+1$, the whole money does not change but $Y$ decreases.\\
+           Similarly, if $y_3\ge2$ let $y_3-2,y_2+1$. If $y_4\ge 5$,let $y_3+1,y_4-5$.\\ As a result, $y_1,y_2,y_3,y_4$ all satisfy the greedy algorithm above, which means $(x_1,x_2,x_3,x_4)=(y_1,y_2,y_3,y_4)$.
+            \item
+            Proof:\\
+            Assume in the optimal solution,the number of each contract is $d_i$.\\
+            Assumption: $\forall c$, if $\exists j\le k-1$ with $d_j\ge c$. We can let $d_j-c, d_{j+1}+1$ get a new sequence of $\{d_{i}^{'}\}$. 
+            \begin{equation}
+            \begin{aligned}
+                \sum_{i=1}^{k}d_i*c^i=\sum_{i=1}^{k}d_{i}^{'}*c^i=n\\
+                \sum_{i=1}^{k}d_i-d_{i}^{'}=c-1
+                \end{aligned}
+            \end{equation}
+            That conflicts with the assumption. So $\forall c, \forall j\le k-1, d_j< c$.
+            So the optimal solution is greedy algorithm.
+            \item The values are $25M,21M,10M,1M$, and the sum $n=63M$.
+            If we use the greedy algorithm, we get
+            \begin{equation}
+                63M=2*25M+10M+3*1M
+            \end{equation}
+            But we can also use
+            \begin{equation}
+                63M=3*21M
+            \end{equation}
+            In method1 the number of contracts is 6 while in method2 is 3.
+        \end{enumerate}
+    \end{solution}
+	
+    \item \textit{Set Cover.} \textbf{Set Cover} is a typical kind of problems that can be solved by greedy strategy. One version is that: Given $n$ points on a straight line, denoted as $\{x_i\}_{i=1}^n$, and we intend to use minimum number of closed intervals with fixed length $k$ to cover these $n$ points.
+    \begin{enumerate}
+    	\item Please design an algorithm based on \textbf{greedy} strategy to solve the above problem, in the form of \emph{pseudo code}. Then please analyze its \emph{worst-case} complexity.
+    	\item Please prove the correctness of your algorithm.
+    	\item Please complete the provided source code by C/C++ {\color{blue}(The source code \emph{Code-SetCover.cpp} is attached on the course webpage)}, and please write down the output result by testing the following inputs: 
+    	\begin{enumerate}
+    		\item the number of points $n=7$;
+    		\item the coordinates of points
+    		$x=\{1,2,3,4,5,6,-2\}$;
+    		\item the length of intervals
+    		$k=3$.
+    	\end{enumerate}
+        \textbf{Remark}: Screenshots of running results are also acceptable 
+    \end{enumerate}
+   \begin{solution}
+   ~\par
+   \begin{enumerate}
+       \item ~\par
+        \begin{algorithm}[H]
+		\KwIn{An array $A[x_1,\cdots,x_n]$,the length $K$}
+		\KwOut{The minimum number t}
+		
+		\BlankLine
+		\caption{Set Cover}\label{Alg-quicksort}
+		
+		%\If{$n \le 1$}{
+		%  \Return\;
+		%}
+		sort($A[x_1,\cdots,x_n]$)\;
+		$t\leftarrow 0 ~i \leftarrow 0$\;
+		\While{$i<n$}{
+		    $final \leftarrow A[i]+K$\;
+			\While {$i<n ~\&\&~ A[i] < final$}{
+				$i \leftarrow i+1$\;
+			}
+			$t \leftarrow t+1$\;
+		}
+		\Return $t$
+	\end{algorithm}
+	The complexity of worst-case is $O(nlogn)$. \\
+	No matter what situation it is,the sort cost $O(nlogn)$(regardless of bucket sorting).And the loop at most run $O(n)$($i$ from $0$ to $n-1$).So the complexity is $O(nlogn)$ in every case. 
+	\item 	Proof:\\
+	In this algorithm, assume the $j^{th}$ time program enters the outer loop when $i=a_j$. So the chosen intervals are \{[$x_{a_j},x_{a_j}+K$]\}$=\mathbb{X}$. Assume the optimal solution of intervals are $\mathbb{Y}$. We can assume each two intervals in $\mathbb{Y}$ are disjointed and sorted. (If $[y_i,y_i+K],[y_j,y_j+K],y_i<y_j$ are not disjointed, we can change the  $[y_i,y_i+K]$ to $[y_j-K,y_j]$,and it covers more space.)\\
+	Assume i is the smallest number satisfies $[x_{a_i},x_{a_i}+K]\neq [y_i,y_i+K]$.\\
+	If $y_i>x_{a_i}$, since each intervals in $\mathbb{Y}$ is disjointed, the $x_{a_i}$ is not in any intervals in $\mathbb{Y}$, which is impossible.\\
+	If $y_i<x_{a_i}$, we can change the $[y_i,y_i+K]$ to $[x_{a_i},x_{a_i}+K]$ in $\mathbb{Y}$ (adjust other intervals after this interval), it also satisfies the condition,and $\mathbb{Y^{'}}$ is also a optimal solution. And this operations continues until $i==t$.This time $\mathbb{X}=\mathbb{Y}$
+	\item The code is in the appendix.
+   \end{enumerate}
+    \end{solution}
+
+\end{enumerate}
+
+
+
+\vspace{20pt}
+\appendix
+\section{Appendix}
+\begin{lstlisting}[language=C++]
+#include <iostream>
+using namespace std;
+void quickSort(int s[], int l, int r)
+{
+    if (l< r)
+    {
+        int i = l, j = r, x = s[l];
+        while (i < j)
+        {
+            while(i < j && s[j]>= x)
+                j--;
+            if(i < j)
+                s[i++] = s[j];
+            while(i < j && s[i]< x)
+                i++;
+            if(i < j)
+                s[j--] = s[i];
+        }
+        s[i] = x;
+        quickSort(s, l, i - 1);
+        quickSort(s, i + 1, r);
+    }
+}
+int Greedy(int x[], int k, int n)
+{
+    quickSort(x, 0, n-1);
+    int t = 0, i = 0;
+    while (i < n) {
+        int destination = x[i] + k;
+        while (i < n && x[i] < destination)++i;
+        ++t;
+    }
+    return t;
+}
+int main()
+{
+    int x[7]={1,2,3,4,5,6,-2};
+    int k=3;
+    int n=sizeof(x) / sizeof(x[0]);
+    int num_interval=Greedy(x,k,n);
+    cout << num_interval << endl;
+    return 0;
+}
+
+\end{lstlisting}
+
+%========================================================================
+\end{document}
+
